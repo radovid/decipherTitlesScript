@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name      Decipher Title Changer
-// @namespace https://gist.github.com/radovid/df5dd1a532d9109b91610d94cdd91f40
-// @version   0.5
+// @namespace https://github.com/radovid/decipherTitlesScript
+// @version   0.6
 // @description  Userscript for changing webpage titles (tab names) for decipher surveys to include Mac/SN
-// @updateURL https://gist.githack.com/radovid/df5dd1a532d9109b91610d94cdd91f40/raw/90ab6c93e4137e059933b4afef97131e3c915d2d/DecipherTitleChange.user.js
+// @updateURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @include https://surveys.globaltestmarket.com/*
 // @include https://*.decipherinc.com/*
 // @include http://surveys.globaltestmarket.com/*
