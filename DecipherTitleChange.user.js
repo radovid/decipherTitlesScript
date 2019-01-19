@@ -11,8 +11,6 @@
 // @include http://*.decipherinc.com/*
 // ==/UserScript==
 
-// Test update 2
-
 var url = location.href; // Get current url
 // Set regexp for different paths
 var v3 = /gmi\/v3\/(?:[A-Z]+)\/([0-9]{2,}[0-9A-Za-z\_]+)/;
@@ -27,6 +25,7 @@ var natov3 = /gmi\/v3\/NATO\/AMS\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov2 = /gmi\/v2\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var internalv3 = /gmi\/v3\/(?:[A-Z]+)\/INTERNAL\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 
+// Get default first word in default title except for errors (e.g., Quotas, Report, Portal, etc.)
 var currTitle = '';
 if (document.title.includes("error")) {
   currTitle = document.title;
@@ -42,6 +41,7 @@ setTimeout( function() {
   for (var i = 0; i < dirs.length; i++) {
     if (url.search(dirs[i]) > 0) {
       var studyNum = url.match(dirs[i])[1];
+      // Check for and add temp to title
       if (url.includes("temp-")) {
         document.title = dirNames[i] + studyNum + '/temp: ' + currTitle;
       } else {
