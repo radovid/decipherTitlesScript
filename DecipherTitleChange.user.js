@@ -32,7 +32,13 @@ if (title.includes("error")) {
   title = currTitle;
 }
 else if (url.includes("/apps/report/")) {
-  title = "Crosstabs";
+  if (url.includes("/edit/")) {
+    title = "Edit Crosstab";
+  } else if (url.includes("/report/")) {
+    title - "Crosstab Run";
+  } else {
+    title = "Crosstabs";
+  }
 }
 else if (url.includes("/apps/dashboard/")) {
   if (url.includes(":edit")) {
@@ -86,6 +92,9 @@ setTimeout( function() {
   for (var i = 0; i < dirs.length; i++) {
     if (url.search(dirs[i]) > 0) {
       var studyNum = url.match(dirs[i])[1];
+      if (currTitle.includes(studyNum)) {
+        title += " (" + currTitle + ")";
+      }
       // Check for and add temp to title
       if (url.includes("temp-")) {
         document.title = dirNames[i] + studyNum + '/temp: ' + title;
