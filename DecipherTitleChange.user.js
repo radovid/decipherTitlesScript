@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Decipher Title Changer
 // @namespace     https://github.com/radovid/decipherTitlesScript
-// @version       1.2
+// @version       1.3
 // @description   Userscript for changing webpage titles (tab names) for decipher surveys to include Mac/SN
 // @downloadURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @updateURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
@@ -92,9 +92,9 @@ setTimeout( function() {
   for (var i = 0; i < dirs.length; i++) {
     if (url.search(dirs[i]) > 0) {
       var studyNum = url.match(dirs[i])[1];
-      if (currTitle.includes(studyNum)) {
-        title += " (" + currTitle.split(" for ")[1] + ")";
-      }
+      /*if (currTitle.includes(studyNum)) {
+        title += "  (" + currTitle.split(" for ")[1] + ")";
+      }*/
       // Check for and add temp to title
       if (url.includes("temp-")) {
         document.title = dirNames[i] + studyNum + '/temp: ' + title;
