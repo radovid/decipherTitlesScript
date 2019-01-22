@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Decipher Title Changer
 // @namespace     https://github.com/radovid/decipherTitlesScript
-// @version       1.5
+// @version       1.6
 // @description   Userscript for changing webpage titles (tab names) for decipher surveys to include Mac/SN
 // @downloadURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @updateURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
@@ -65,7 +65,7 @@ function setTitle() {
     title = "Test Survey";
   }
   else if (url.includes("?config=GmGrUA&run=1")) {
-    title = "Download Data";
+    title = "Data Downloads";
   }
   else if (url.includes("?markers=1")) {
     title = "Markers";
@@ -84,6 +84,12 @@ function setTitle() {
   }
   else if (url.includes("admin/vc/list")) {
     title = "Change History";
+  }
+  else if (url.includes("/apps/projectwarnings")) {
+    title = "Project Warnings";
+  }
+  else if (url.includes("/apps/campaign")) {
+    title = "Campaigns View";
   }
   else if (url.includes("/projects/detail")) {
     title = "Project Details - Portal";
@@ -117,6 +123,8 @@ setTimeout( function() {
 
 // Sometimes page isn't reloaded when changed and seTitle won't run, hashchange fixes this
 window.addEventListener('hashchange', function(){
+  if location.href.includes("#!") {
     setTitle();
+  }
 });
 
