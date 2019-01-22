@@ -123,7 +123,7 @@ setTimeout( function() {
 
 // Sometimes page isn't reloaded when changed and seTitle won't run, hashchange fixes this
 window.addEventListener('hashchange', function(){
-  if location.href.includes("#!") {
+  if (location.href.includes("#!")) {
     setTitle();
   }
 });
