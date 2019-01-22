@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Decipher Title Changer
 // @namespace     https://github.com/radovid/decipherTitlesScript
-// @version       1.4
+// @version       1.5
 // @description   Userscript for changing webpage titles (tab names) for decipher surveys to include Mac/SN
 // @downloadURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @updateURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
@@ -38,7 +38,7 @@ function setTitle() {
 
   // Set appropriate name for portal page
   if (title.includes("error")) {
-    title = currTitle;
+    currTitle = currTitle;
   }
   else if (url.includes("/apps/report/")) {
     if (url.includes("/edit/")) {
@@ -112,7 +112,7 @@ function setTitle() {
 
 // On some pages title is set with JS and timeout is needed so our set doesn't get overwritten
 setTimeout( function() {
-    setTitle()
+    setTitle();
 }, 200);
 
 // Sometimes page isn't reloaded when changed and seTitle won't run, hashchange fixes this
