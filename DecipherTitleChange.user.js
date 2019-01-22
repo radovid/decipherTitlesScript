@@ -37,8 +37,8 @@ function setTitle() {
   var currTitle = document.title; // Get default title
 
   // Set appropriate name for portal page
-  if (title.includes("error")) {
-    currTitle = currTitle;
+  if (currTitle.includes("error")) {
+    title = currTitle;
   }
   else if (url.includes("/apps/report/")) {
     if (url.includes("/edit/")) {
