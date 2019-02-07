@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Decipher Title Changer
 // @namespace     https://github.com/radovid/decipherTitlesScript
-// @version       1.6
+// @version       1.7
 // @description   Userscript for changing webpage titles (tab names) for decipher surveys to include Mac/SN
 // @downloadURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @updateURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
@@ -21,7 +21,7 @@ var kantar2 = /lsr\/bmr\/v2\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var ag = /bor\/v1\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var walmart = /\/53c\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var maps = /gmi\/v2\/maps\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var natov3 = /gmi\/v3\/NATO\/AMS\/([0-9]{2,}[0-9A-Za-z\_]+)/;
+var natov3 = /gmi\/v3\/AMS\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov2 = /gmi\/v2\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var internalv3 = /gmi\/v3\/(?:[A-Z]+)\/INTERNAL\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 
@@ -37,7 +37,7 @@ function setTitle() {
   var currTitle = document.title; // Get default title
 
   // Set appropriate name for portal page
-  if (currTitle.includes("error")) {
+  if (currTitle.includes("error") || currTitle.includes("Error")) {
     title = currTitle;
   }
   else if (url.includes("/apps/report/")) {
