@@ -25,6 +25,8 @@ var natov3 = /gmi\/v3\/AMS\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov2 = /gmi\/v2\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var internalv3 = /gmi\/v3\/(?:[A-Z]+)\/INTERNAL\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 
+var emea = \/EMEA\/;
+var apac = \/APAC\/;
 
 //var prjTitle = document.getElementsByClassName("title-1")[0].innerText;
 var dirs = [v3,v2,gmi,kantar3,kantar2,ag,walmart,maps,natov3,natov2,internalv3];
@@ -107,9 +109,16 @@ function setTitle() {
       }*/
       // Check for and add temp to title
       if (url.includes("temp-")) {
-        document.title = dirNames[i] + studyNum + '/temp: ' + title;
+         document.title = dirNames[i] + studyNum + '/temp: ' + title;
       } else {
           document.title = dirNames[i] + studyNum + ': ' + title;
+      }
+      if (url.match(emea)) {
+         document.title = dirNames[i] + studyNum +  title + 'EMEA';
+      }
+
+      if (url.match(apac)) {
+         document.title = dirNames[i] + studyNum + title + 'APAC';
       }
       break;
     }
