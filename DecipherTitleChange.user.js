@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Decipher Title Changer
 // @namespace     https://github.com/radovid/decipherTitlesScript
-// @version       1.8
+// @version       1.9
 // @description   Userscript for changing webpage titles (tab names) for decipher surveys to include Mac/SN
 // @downloadURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @updateURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
@@ -25,8 +25,8 @@ var natov3 = /gmi\/v3\/AMS\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov2 = /gmi\/v2\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var internalv3 = /gmi\/v3\/(?:[A-Z]+)\/INTERNAL\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 
-var emea = /\/EMEA\/;
-var apac = /\/APAC\/;
+var emea = /\/EMEA\//;
+var apac = /\/APAC\//;
 
 //var prjTitle = document.getElementsByClassName("title-1")[0].innerText;
 var dirs = [v3,v2,gmi,kantar3,kantar2,ag,walmart,maps,natov3,natov2,internalv3];
