@@ -1,16 +1,16 @@
 // ==UserScript==
 // @name          Decipher Title Changer
 // @namespace     https://github.com/radovid/decipherTitlesScript
-// @version       1.10
+// @version       1.11
 // @description   Userscript for changing webpage titles (tab names) for decipher surveys to include Mac/SN
 // @downloadURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @updateURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @include https://surveys.globaltestmarket.com/*
 // @include https://*.decipherinc.com/*
-// @include https://surveys.twitterfeedback.com/*
+// @include https://survey.twitterfeedback.com/*
 // @include http://surveys.globaltestmarket.com/*
 // @include http://*.decipherinc.com/*
-// @include http://surveys.twitterfeedback.com/*
+// @include http://survey.twitterfeedback.com/*
 // ==/UserScript==
 
 
@@ -23,7 +23,7 @@ var kantar2 = /lsr\/bmr\/v2\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var ag = /bor\/v1\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov3 = /gmi\/v3\/AMS\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov2 = /gmi\/v2\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var selfserve = /selfserve\/(?:[A-Za-z0-9]+)\/([A-Za-z0-9]+)/;
+var selfserve = /selfserve\/(?:[A-Za-z0-9]+)\/([A-Za-z0-9_]+)/;
 
 var emea = /\/EMEA\//;
 var apac = /\/APAC\//;
@@ -36,8 +36,8 @@ function setTitle() {
   var url = location.href; // Get current url
   var title = '';
   var currTitle = document.title; // Get default title
-  var selfSrv = url.split('.')[0].split('/')[2] + '/';
-  var dirNames = ['v3/', 'v2/', 'gmi/', 'KH/', 'KH/', 'AG/', 'Nato/', 'GBHT/', selfSrv];
+  var decServer = url.includes("twitterfeedback") ? 'twitter/' : url.includes("1f59")&&url.includes("selfserve") ? 'M3/' : url.split('.')[0].split('/')[2] + '/';
+  var dirNames = ['v3/', 'v2/', 'gmi/', 'KH/', 'KH/', 'AG/', 'Nato/', 'GBHT/', decServer];
 
   // Set appropriate name for portal page
   if (currTitle.includes("error") || currTitle.includes("Error")) {
