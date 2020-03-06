@@ -1,14 +1,16 @@
 // ==UserScript==
 // @name          Decipher Title Changer
 // @namespace     https://github.com/radovid/decipherTitlesScript
-// @version       1.9
+// @version       1.10
 // @description   Userscript for changing webpage titles (tab names) for decipher surveys to include Mac/SN
 // @downloadURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @updateURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @include https://surveys.globaltestmarket.com/*
 // @include https://*.decipherinc.com/*
+// @include https://surveys.twitterfeedback.com/*
 // @include http://surveys.globaltestmarket.com/*
 // @include http://*.decipherinc.com/*
+// @include http://surveys.twitterfeedback.com/*
 // ==/UserScript==
 
 
@@ -19,24 +21,23 @@ var gmi = /gmi\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var kantar3 = /lsr\/bmr\/v3\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var kantar2 = /lsr\/bmr\/v2\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var ag = /bor\/v1\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var walmart = /\/53c\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var maps = /gmi\/v2\/maps\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov3 = /gmi\/v3\/AMS\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov2 = /gmi\/v2\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var internalv3 = /gmi\/v3\/(?:[A-Z]+)\/INTERNAL\/([0-9]{2,}[0-9A-Za-z\_]+)/;
+var selfserve = /selfserve\/(?:[A-Za-z0-9]+)\/([A-Za-z0-9]+)/;
 
 var emea = /\/EMEA\//;
 var apac = /\/APAC\//;
 
 //var prjTitle = document.getElementsByClassName("title-1")[0].innerText;
-var dirs = [v3,v2,gmi,kantar3,kantar2,ag,walmart,maps,natov3,natov2,internalv3];
-var dirNames = ['v3/','v2/','gmi/','ktr-v3/','ktr-v2/','AG/','wmt/','wmt/','Nato/','GBHT/','v3/INT/'];
+var dirs = [v3, v2, gmi, kantar3, kantar2, ag, natov3, natov2, selfserve];
 
 
 function setTitle() {
   var url = location.href; // Get current url
   var title = '';
   var currTitle = document.title; // Get default title
+  var selfSrv = url.split('.')[0].split('/')[2] + '/';
+  var dirNames = ['v3/', 'v2/', 'gmi/', 'KH/', 'KH/', 'AG/', 'Nato/', 'GBHT/', selfSrv];
 
   // Set appropriate name for portal page
   if (currTitle.includes("error") || currTitle.includes("Error")) {
@@ -114,7 +115,7 @@ function setTitle() {
           document.title = dirNames[i] + studyNum + ': ' + title;
       }
       if (url.match(emea)) {
-         document.title = dirNames[i] + studyNum +  title + 'EMEA';
+         document.title = dirNames[i] + studyNum + title + 'EMEA';
       }
 
       if (url.match(apac)) {
@@ -136,4 +137,3 @@ window.addEventListener('hashchange', function(){
     setTitle();
   }
 });
-
