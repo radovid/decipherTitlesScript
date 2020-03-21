@@ -1,15 +1,17 @@
 // ==UserScript==
 // @name          Decipher Title Changer
 // @namespace     https://github.com/radovid/decipherTitlesScript
-// @version       1.12
+// @version       1.13
 // @description   Userscript for changing webpage titles (tab names) for decipher surveys to include Mac/SN
 // @downloadURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @updateURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @include https://surveys.globaltestmarket.com/*
 // @include https://*.decipherinc.com/*
+// @include https://*.focusvision.com/*
 // @include https://survey.twitterfeedback.com/*
 // @include http://surveys.globaltestmarket.com/*
 // @include http://*.decipherinc.com/*
+// @include http://*.focusvision.com/*
 // @include http://survey.twitterfeedback.com/*
 // ==/UserScript==
 
@@ -20,7 +22,8 @@ var v2 = /gmi\/v2\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var gmi = /gmi\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var kantar3 = /lsr\/bmr\/v3\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var kantar2 = /lsr\/bmr\/v2\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var ag = /bor\/v1\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
+var ag = /lsr\/bmr\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
+var ag0 = /bor\/v1\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov3 = /gmi\/v3\/AMS\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov2 = /gmi\/v2\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var selfserve = /selfserve\/(?:[A-Za-z0-9]+)\/([A-Za-z0-9_]+)/;
@@ -29,7 +32,7 @@ var emea = /\/EMEA\//;
 var apac = /\/APAC\//;
 
 //var prjTitle = document.getElementsByClassName("title-1")[0].innerText;
-var dirs = [v3, v2, gmi, kantar3, kantar2, ag, natov3, natov2, selfserve];
+var dirs = [v3, v2, gmi, kantar3, kantar2, ag, ag0, natov3, natov2, selfserve];
 
 
 function setTitle() {
@@ -37,7 +40,7 @@ function setTitle() {
   var title = '';
   var currTitle = document.title; // Get default title
   var decServer = url.includes("twitterfeedback") ? 'twitter/' : url.includes("1f59")&&url.includes("selfserve") ? 'M3/' : url.split('.')[0].split('/')[2] + '/';
-  var dirNames = ['v3/', 'v2/', 'gmi/', 'KH/', 'KH/', 'AG/', 'Nato/', 'GBHT/', decServer];
+  var dirNames = ['v3/', 'v2/', 'gmi/', 'KH/', 'KH/', 'AG/', 'AG0/', 'Nato/', 'GBHT/', decServer];
 
   // Set appropriate name for portal page
   if (currTitle.includes("error") || currTitle.includes("Error")) {
