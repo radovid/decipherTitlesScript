@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Decipher Title Changer
 // @namespace     https://github.com/radovid/decipherTitlesScript
-// @version       1.13
+// @version       1.15
 // @description   Userscript for changing webpage titles (tab names) for decipher surveys to include Mac/SN
 // @downloadURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @updateURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
@@ -23,30 +23,37 @@ var gmi = /gmi\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var kantar3 = /lsr\/bmr\/v3\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var kantar2 = /lsr\/bmr\/v2\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var ag = /lsr\/bmr\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var ag0 = /bor\/v1\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
+var ag0ld = /bor\/v1\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
+var agLsh = /lsh\/v1\/(?:[acemps]{3,4})\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov3 = /gmi\/v3\/AMS\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov2 = /gmi\/v2\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var selfserve = /selfserve\/(?:[A-Za-z0-9]+)\/([A-Za-z0-9_]+)/;
 
-var emea = /\/EMEA\//;
-var apac = /\/APAC\//;
+// Set regexp for regions
+var ams = /\/AMS\//i;
+var emea = /\/EMEA\//i;
+var apac = /\/APAC\//i;
+var ent = /\/ENT\//i;
+var internal = /\/INTERNAL\//i;
 
 //var prjTitle = document.getElementsByClassName("title-1")[0].innerText;
-var dirs = [v3, v2, gmi, kantar3, kantar2, ag, ag0, natov3, natov2, selfserve];
+var dirs = [v3, v2, gmi, kantar3, kantar2, ag, ag0ld, agLsh, natov3, natov2, selfserve];
+var regions = [ams, emea, apac, internal];
 
 
 function setTitle() {
   var url = location.href; // Get current url
   var title = '';
   var currTitle = document.title; // Get default title
-  var decServer = url.includes("twitterfeedback") ? 'twitter/' : url.includes("1f59")&&url.includes("selfserve") ? 'M3/' : url.split('.')[0].split('/')[2] + '/';
-  var dirNames = ['v3/', 'v2/', 'gmi/', 'KH/', 'KH/', 'AG/', 'AG0/', 'Nato/', 'GBHT/', decServer];
+  var decServer = url.includes("twitterfeedback") ? 'twitter/' : url.includes("1f59") && url.includes("selfserve") ? 'M3/' : url.split('.')[0].split('/')[2] + '/';
+  var dirNames = ['v3/', 'v2/', 'gmi/', 'KH/', 'KH/', 'AG/', 'AG0/', 'LSH/', 'Nato/', 'GBHT/', decServer];
+  var regNames = ['AMS', 'EMEA', 'APAC', 'ENT', 'Internal'];
 
   // Set appropriate name for portal page
   if (currTitle.includes("error") || currTitle.includes("Error")) {
     title = currTitle;
   }
-  else if (url.includes("/apps/report/")) {
+  else if (url.includes("/apps/report/")) { // Crosstabs
     if (url.includes("/edit/")) {
       title = "Edit Crosstab";
     } else if (url.includes("#!/report/")) {
@@ -55,7 +62,7 @@ function setTitle() {
       title = "Crosstabs";
     }
   }
-  else if (url.includes("/apps/dashboard/")) {
+  else if (url.includes("/apps/dashboard/")) { // Dashboards
     if (url.includes(":edit")) {
       title = "Edit Dashboard";
     } else if (url.includes(":view")) {
@@ -102,32 +109,32 @@ function setTitle() {
   }
   else {
     title = currTitle.split(' ')[0];
-  }
+  } // end of else ifs currTitle/url.includes
 
+  // Check for and add region to title
+  for (var y = 0; y < regions.length; y++) {
+      if (url.match(regions[y])) {
+          var reg = regions[y];
+          title += ' (' + regNames[y] + ')';
+          break;
+      }
+  }
   // Match regexps and set new title
   for (var i = 0; i < dirs.length; i++) {
     if (url.search(dirs[i]) > 0) {
       var studyNum = url.match(dirs[i])[1];
-      /*if (currTitle.includes(studyNum)) {
-          title += "  (" + currTitle.split(" for ")[1] + ")";
-      }*/
       // Check for and add temp to title
       if (url.includes("temp-")) {
-         document.title = dirNames[i] + studyNum + '/temp: ' + title;
+          document.title = dirNames[i] + studyNum + '/temp: ' + title;
+      } else if (url.includes("/trans")) {
+          document.title = dirNames[i] + studyNum + '/trans: ' + title;
       } else {
           document.title = dirNames[i] + studyNum + ': ' + title;
-      }
-      if (url.match(emea)) {
-         document.title = dirNames[i] + studyNum + title + 'EMEA';
-      }
-
-      if (url.match(apac)) {
-         document.title = dirNames[i] + studyNum + title + 'APAC';
       }
       break;
     }
   }
-}
+} // end setTitle function
 
 // On some pages title is set with JS and timeout is needed so our set doesn't get overwritten
 setTimeout( function() {
