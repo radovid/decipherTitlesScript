@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Decipher Title Changer
 // @namespace     https://github.com/radovid/decipherTitlesScript
-// @version       1.16
+// @version       1.17
 // @description   Userscript for changing webpage titles (tab names) for decipher surveys to include Mac/SN
 // @downloadURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
 // @updateURL https://github.com/radovid/decipherTitlesScript/raw/master/DecipherTitleChange.user.js
@@ -18,15 +18,12 @@
 
 // Set regexp for different paths
 var v3 = /gmi\/v3\/(?:[A-Z]+)\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var v2 = /gmi\/v2\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var gmi = /gmi\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var kantar3 = /lsr\/bmr\/v3\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var kantar2 = /lsr\/bmr\/v2\/([0-9]{2,}[0-9A-Za-z\_]+)/;
+var gmi = /gmi\/(v2\/)?([0-9]{2,}[0-9A-Za-z\_]+)/;
+var kh = /lsr\/bmr\/v[23]\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var ag = /lsr\/bmr\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var ag0ld = /bor\/v1\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var lsh = /lsh\/v1\/(?:[acemps]{3,4})\/((?:[a-z]{3,7}\/)?[0-9]{2,}[0-9A-Za-z\_]+)/;
-var natov3 = /gmi\/v3\/AMS\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var natov2 = /gmi\/v2\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
+var lsh = /lsh\/v1\/(?:[acemps]{3,4})\/(?:[a-z]{3,7}\/)?([0-9]{2,}[0-9A-Za-z\_]+)/;
+var nato = /gmi\/v[23]\/(?:AMS\/)?NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var selfserve = /selfserve\/(?:[A-Za-z0-9]+)\/([A-Za-z0-9_]+)/;
 
 // Set regexp for regions
@@ -37,7 +34,7 @@ var ent = /\/ENT\//i;
 var internal = /\/INTERNAL\//i;
 
 //var prjTitle = document.getElementsByClassName("title-1")[0].innerText;
-var dirs = [v3, v2, gmi, kantar3, kantar2, ag, ag0ld, lsh, natov3, natov2, selfserve];
+var dirs = [v3, gmi, kh, ag, ag0ld, lsh, nato, selfserve];
 var regions = [ams, emea, apac, ent, internal];
 
 
@@ -46,7 +43,7 @@ function setTitle() {
   var title = '';
   var currTitle = document.title; // Get default title
   var decServer = url.includes("twitterfeedback") ? 'twitter/' : ( url.includes("1f59") || url.includes("252c") ) && url.includes("selfserve") ? 'M3/' : url.split('.')[0].split('/')[2] + '/';
-  var dirNames = ['v3/', 'v2/', 'gmi/', 'KH/', 'KH0/', 'AG/', 'AG0/', 'LSH/', 'Nato/', 'GBHT/', decServer];
+  var dirNames = ['v3/', 'gmi/', 'KH0/', 'AG/', 'AG0/', 'LSH/', 'Nato/', decServer];
   var regNames = ['AMS', 'EMEA', 'APAC', 'ENT', 'Internal'];
 
   // Set appropriate name for portal page
@@ -105,7 +102,7 @@ function setTitle() {
     title = "Campaigns View";
   }
   else if (url.includes("/projects/detail")) {
-    title = "Project Details - Portal";
+    title = "Project Details";
   }
   else {
     title = currTitle.split(' ')[0];
@@ -114,24 +111,21 @@ function setTitle() {
   // Check for and add region to title
   for (var y = 0; y < regions.length; y++) {
       if (url.match(regions[y])) {
-          var reg = regions[y];
-          title += ' (' + reg + ')';
+          title += ' (' + regNames[y] + ')';
           break;
       }
   }
   // Match regexps and set new title
   for (var i = 0; i < dirs.length; i++) {
     if (url.search(dirs[i]) > 0) {
-      var studyNum = url.match(dirs[i])[1];
-
+      var studyNum = url.match(dirs[i])[-1];
       // Check for and add temp to title
       if (url.includes("temp-")) {
-          document.title = dirNames[i] + studyNum + '/temp: ' + title;
+          title = '/temp' + title;
       } else if (url.includes("/trans")) {
-          document.title = dirNames[i] + studyNum + '/trans: ' + title;
-      } else {
-          document.title = dirNames[i] + studyNum + ': ' + title;
+          title = '/trans' + title;
       }
+      document.title = dirNames[i] + studyNum + ': ' + title;
       break;
     }
   }
