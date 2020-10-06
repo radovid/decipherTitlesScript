@@ -118,7 +118,7 @@ function setTitle() {
   // Match regexps and set new title
   for (var i = 0; i < dirs.length; i++) {
     if (url.search(dirs[i]) > 0) {
-      var studyNum = url.match(dirs[i])[-1];
+      var studyNum = url.match(dirs[i])[1];
       // Check for and add temp to title
       if (url.includes("temp-")) {
           title = '/temp' + title;
