@@ -24,7 +24,7 @@ var kantar3 = /lsr\/bmr\/v3\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var kantar2 = /lsr\/bmr\/v2\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var ag = /lsr\/bmr\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var ag0ld = /bor\/v1\/AG\/([0-9]{2,}[0-9A-Za-z\_]+)/;
-var agLsh = /lsh\/v1\/(?:[acemps]{3,4})\/([0-9]{2,}[0-9A-Za-z\_]+)/;
+var lsh = /lsh\/v1\/(?:[acemps]{3,4})\/((?:[a-z]{3,7}\/)?[0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov3 = /gmi\/v3\/AMS\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var natov2 = /gmi\/v2\/NATO\/([0-9]{2,}[0-9A-Za-z\_]+)/;
 var selfserve = /selfserve\/(?:[A-Za-z0-9]+)\/([A-Za-z0-9_]+)/;
@@ -37,7 +37,7 @@ var ent = /\/ENT\//i;
 var internal = /\/INTERNAL\//i;
 
 //var prjTitle = document.getElementsByClassName("title-1")[0].innerText;
-var dirs = [v3, v2, gmi, kantar3, kantar2, ag, ag0ld, agLsh, natov3, natov2, selfserve];
+var dirs = [v3, v2, gmi, kantar3, kantar2, ag, ag0ld, lsh, natov3, natov2, selfserve];
 var regions = [ams, emea, apac, ent, internal];
 
 
@@ -45,8 +45,8 @@ function setTitle() {
   var url = location.href; // Get current url
   var title = '';
   var currTitle = document.title; // Get default title
-  var decServer = url.includes("twitterfeedback") ? 'twitter/' : url.includes("1f59") && url.includes("selfserve") ? 'M3/' : url.split('.')[0].split('/')[2] + '/';
-  var dirNames = ['v3/', 'v2/', 'gmi/', 'KH/', 'KH/', 'AG/', 'AG0/', 'LSH/', 'Nato/', 'GBHT/', decServer];
+  var decServer = url.includes("twitterfeedback") ? 'twitter/' : ( url.includes("1f59") || url.includes("252c") ) && url.includes("selfserve") ? 'M3/' : url.split('.')[0].split('/')[2] + '/';
+  var dirNames = ['v3/', 'v2/', 'gmi/', 'KH/', 'KH0/', 'AG/', 'AG0/', 'LSH/', 'Nato/', 'GBHT/', decServer];
   var regNames = ['AMS', 'EMEA', 'APAC', 'ENT', 'Internal'];
 
   // Set appropriate name for portal page
@@ -115,7 +115,7 @@ function setTitle() {
   for (var y = 0; y < regions.length; y++) {
       if (url.match(regions[y])) {
           var reg = regions[y];
-          title += ' (' + regNames[y] + ')';
+          title += ' (' + reg + ')';
           break;
       }
   }
@@ -123,6 +123,7 @@ function setTitle() {
   for (var i = 0; i < dirs.length; i++) {
     if (url.search(dirs[i]) > 0) {
       var studyNum = url.match(dirs[i])[1];
+
       // Check for and add temp to title
       if (url.includes("temp-")) {
           document.title = dirNames[i] + studyNum + '/temp: ' + title;
